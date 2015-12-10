@@ -1,31 +1,53 @@
 #include "JumpingState.h"
+#include "StateManager.h"
 
 JumpingState::~JumpingState()
 {
-
+	std::cout << "JumpingState exited" << std::endl;
 }
 
-void JumpingState::init(GameStateManager* manager)
+void JumpingState::init(StateManager* manager)
 {
+	this->manager = manager;
+}
 
+void JumpingState::exit()
+{
+	delete this;
 }
 
 void JumpingState::update(float deltaTime)
 {
-
+	_deltaTime = deltaTime;
 }
 
-void JumpingState::draw()
+void JumpingState::draw(Sprite& sprite, Vec2f& pos, int framesPerSec, bool isFlipped)
 {
-	manager->m_player->draw();
+	sprite.animate(pos, isFlipped, 2, framesPerSec);
 }
 
-void JumpingState::keyDown(ci::app::KeyEvent event)
+void JumpingState::keyDown(ci::app::KeyEvent event, ci::Vec2f& pos, ci::Vec2f& velocity)
 {
+	if (event.getCode() == cinder::app::KeyEvent::KEY_LEFT)
+	{
+		manager->setState("running");
+	}
 
+	else if (event.getCode() == cinder::app::KeyEvent::KEY_RIGHT)
+	{
+		manager->setState("running");
+	}
 }
 
 void JumpingState::keyUp(ci::app::KeyEvent event)
 {
+	if (event.getCode() == cinder::app::KeyEvent::KEY_LEFT)
+	{
+		manager->setState("standing");
+	}
 
+	if (event.getCode() == cinder::app::KeyEvent::KEY_RIGHT)
+	{
+		manager->setState("standing");
+	}
 }

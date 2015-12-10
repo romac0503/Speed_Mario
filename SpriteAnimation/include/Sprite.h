@@ -7,7 +7,6 @@
 #include "cinder/gl/Texture.h"
 #include "cinder/Rect.h"
 #include "cinder/Utilities.h"
-#include "SpeedMarioApp.h"
 
 using namespace ci;
 using namespace ci::app;
@@ -15,23 +14,14 @@ using namespace std;
 
 class Sprite {
 public:
-	Sprite(/*ci::gl::Texture texture, int rows, int spritesPerRow*/);
+	Sprite(ci::gl::Texture& texture /*, int rows, int spritesPerRow*/);
 	~Sprite();
 	
-	void draw(ci::gl::Texture& texture, Vec2f& position, bool left, int animation, int framesPerSec, Vec2f frameSize);
+	void draw(Vec2f& position, bool left, int animation, int framesPerSec);
 	void update(float delta);
-
-	//! sets the active animation
-	void setAnimation(int animation);
-
-	//! add new animation
-	//! \param name the name of the animation
-	//! \param startIdx of the animation
-	//! \param endIdx of the animation
-	//! \param flip true if frame should be flipped for left right direction
-	void addAnimation(std::string& state, int startIdx, int endIdx, bool flip);
-	void animate(ci::gl::Texture& texture, Vec2f& position, bool left, int animation, int framesPerSec, Vec2f frameSize);
-	
+	void animate(Vec2f& position, bool left, int animation, int framesPerSec);
+	void setFrameSize(Vec2f frameSize) { _frameSize = frameSize; }
+	Vec2f getFrameSize() { return _frameSize; }
 
 private:
 	struct Animation
@@ -41,7 +31,6 @@ private:
 		bool _flip;     // flag if frame should be flipped for left right direction
 	};
 
-	std::map<std::string, Animation> _animations;
-
-	Animation _currentAnimation;	
+	ci::gl::Texture _texture;
+	Vec2f _frameSize;
 };

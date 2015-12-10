@@ -1,39 +1,50 @@
 #include "StandingState.h"
+#include "StateManager.h"
 
 StandingState::~StandingState()
 {
-
+	std::cout << "StandingState exited" << std::endl;
 }
 
-void StandingState::init(GameStateManager* manager)
+void StandingState::init(StateManager* manager)
 {
-
+	this->manager = manager;		// da ist noch ein Fehler!
 }
 
-void StandingState::update(double deltaTime)
+void StandingState::exit()
 {
-
+	delete this;
 }
 
-void StandingState::draw()
+void StandingState::update(float deltaTime)
 {
-	manager->m_player->draw();
+	_deltaTime = deltaTime;
 }
 
-void StandingState::keyDown(ci::app::KeyEvent event)
+void StandingState::draw(Sprite& sprite, Vec2f& pos, int framesPerSec, bool isFlipped)
 {
-	if (event.getCode() == app::KeyEvent::KEY_LEFT)
+	sprite.animate(pos, isFlipped, 0, framesPerSec);
+}
+
+void StandingState::keyDown(ci::app::KeyEvent event, cinder::Vec2f& pos, cinder::Vec2f& velocity)
+{
+	if (event.getCode() == cinder::app::KeyEvent::KEY_LEFT)
 	{
-		manager->setState("Running");
+		manager->setState("running");
 	}
 
-	if (event.getCode() == app::KeyEvent::KEY_RIGHT)
+	else if (event.getCode() == cinder::app::KeyEvent::KEY_RIGHT)
 	{
-		manager->setState("Running");
+		manager->setState("running");
+	}
+
+	else if (event.getCode() == cinder::app::KeyEvent::KEY_SPACE)
+	{
+		manager->setState("jumping");
 	}
 }
 
 void StandingState::keyUp(ci::app::KeyEvent event)
 {
-
+	
 }

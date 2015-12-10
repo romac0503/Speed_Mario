@@ -65,7 +65,7 @@
       <AdditionalIncludeDirectories>"..\..\..\..\..\SDK\cinder\include";..\include</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Link>
-      <AdditionalDependencies>cinder_d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>cinder_d.lib;shell32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>"..\..\..\..\..\SDK\cinder\lib";"..\..\..\..\..\SDK\cinder\lib\msw"</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
@@ -108,13 +108,22 @@
     <ResourceCompile Include="Resources.rc" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\src\Sprite.cpp" />
+    <ClCompile Include="..\src\JumpingState.cpp" />
+    <ClCompile Include="..\src\RunningState.cpp" />
     <ClCompile Include="..\src\SpeedMarioApp.cpp" />
+    <ClCompile Include="..\src\Sprite.cpp" />
+    <ClCompile Include="..\src\StandingState.cpp" />
+    <ClCompile Include="..\src\StateManager.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\include\JumpingState.h" />
     <ClInclude Include="..\include\Resources.h" />
-    <ClInclude Include="..\include\Sprite.h" />
+    <ClInclude Include="..\include\RunningState.h" />
     <ClInclude Include="..\include\SpeedMarioApp.h" />
+    <ClInclude Include="..\include\Sprite.h" />
+    <ClInclude Include="..\include\StandingState.h" />
+    <ClInclude Include="..\include\State.h" />
+    <ClInclude Include="..\include\StateManager.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets" />

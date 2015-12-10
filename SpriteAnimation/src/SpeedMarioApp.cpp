@@ -1,5 +1,3 @@
-#include "cinder/app/AppNative.h"
-#include "cinder/gl/gl.h"
 #include "SpeedMarioApp.h"
 
 #define WINDOW_WIDTH 1980
@@ -19,6 +17,9 @@ void SpriteAnimationApp::prepareSettings(Settings* settings)
 	settings->setTitle("Main | http://www.multimediatechnology.at");
 	settings->setWindowSize(1280,860);
 	settings->setResizable(false);
+	standing = "standing";
+	running = "running";
+	jumping = "jumping";
 }
 
 void SpriteAnimationApp::setup()
@@ -28,11 +29,27 @@ void SpriteAnimationApp::setup()
 
 	texture = loadImage(loadAsset("../assets/mario.png"));	
 	isLeft = false;
-	player = new Sprite();
+	player = new Sprite(texture);
+	player->setFrameSize(FRAME_SIZE);
 
 	playerStartPos = ci::app::getWindowCenter();
 	pos = playerStartPos;
 	velocity = Vec2f(12.0, 0);
+
+	// create Character States
+	/*StandingState* standing = new StandingState(manager);*/
+	/*manager->registerState("standing", standing);*/
+
+	/*RunningState* running = new RunningState(manager);*/
+	/*manager->registerState("running", running);*/
+
+	/*JumpingState* jumping = new JumpingState(manager);*/
+	/*manager->registerState("jumping", jumping);*/
+
+	manager = new StateManager();
+	// enter first state
+	manager->setState("standing");
+
 	lastTime = getElapsedSeconds();
 }
 
@@ -41,6 +58,7 @@ void SpriteAnimationApp::update()
 	currTime = getElapsedSeconds();
 	deltaTime = currTime - lastTime;
 	lastTime = currTime;
+	manager->update(deltaTime);
 }
 
 void SpriteAnimationApp::draw()
@@ -49,77 +67,17 @@ void SpriteAnimationApp::draw()
 	gl::clear( Color( 0, 0, 0 ) ); 
 	gl::enableAlphaTest();
 	gl::enableAlphaBlending();
-	player->animate(texture, pos, isLeft, currState, FRAMES_PER_SECOND, FRAME_SIZE);
-	//drawMario(pos, isLeft, currState );
+	manager->draw(*player, pos, FRAMES_PER_SECOND);
 }
-
-//void SpriteAnimationApp::drawMario(const Vec2f& position, bool left, SpriteAnimationApp::MarioAnimation animation)
-//{
-//	gl::pushMatrices();
-//
-//	// move mario to the position
-//	gl::translate(position);
-//	
-//	// flip if left
-//	if (left)
-//	{
-//		gl::scale(Vec2f(-1, 1));
-//	}
-//
-//	int frame = 0;
-//
-//	// calculate the correct frame
-//	switch (animation)
-//	{
-//	case MARIO_STANDING:
-//		frame = 0;
-//		break;
-//	case MARIO_RUNNING:
-//		frame = (ci::app::getElapsedFrames() / FRAMES_PER_SECOND) % 2 + 1;
-//		break;
-//	case MARIO_JUMPING:
-//		frame = 2;
-//		break;
-//	}
-//
-//	// set origin to bottom-center.
-//	gl::translate(Vec2f(-FRAME_SIZE.x / 2, -FRAME_SIZE.y));
-//
-//	// draw the final frame.
-//	gl::draw(texture, Area(Vec2i(64 * frame, 0), Vec2i(64 * (frame + 1), 64)), Rectf(0, 0, 64, 64));
-//	gl::popMatrices();
-//}
-
-
 
 void SpriteAnimationApp::keyDown(ci::app::KeyEvent event)
 {
-	if (event.getCode() == app::KeyEvent::KEY_LEFT)
-	{
-		currState = MarioAnimation::MARIO_RUNNING;
-		isLeft = true;
-		pos.x -= (deltaTime + velocity.x);
-	}
-
-	if (event.getCode() == app::KeyEvent::KEY_RIGHT)
-	{
-		currState = MarioAnimation::MARIO_RUNNING;
-		isLeft = false;
-		pos.x += (deltaTime + velocity.x);
-	}
+	manager->keyDown(event, pos, velocity);
 }
 
 void SpriteAnimationApp::keyUp(ci::app::KeyEvent event)
 {
-	if (event.getCode() == app::KeyEvent::KEY_LEFT)
-	{
-		currState = MarioAnimation::MARIO_STANDING;
-	}
-
-	if (event.getCode() == app::KeyEvent::KEY_RIGHT)
-	{
-		currState = MarioAnimation::MARIO_STANDING;
-	}
+	manager->keyUp(event);
 }
 
 CINDER_APP_NATIVE( SpriteAnimationApp, RendererGl )
