@@ -3,7 +3,7 @@
 
 RunningState::~RunningState()
 {
-	std::cout << "RunningState exited" << std::endl;
+	
 }
 
 void RunningState::init(StateManager* manager)
@@ -13,7 +13,7 @@ void RunningState::init(StateManager* manager)
 
 void RunningState::exit()
 {
-	delete this;
+	this->manager = nullptr;
 }
 
 void RunningState::update(float deltaTime)
@@ -23,14 +23,9 @@ void RunningState::update(float deltaTime)
 
 void RunningState::keyDown(ci::app::KeyEvent event, Vec2f& pos, Vec2f& velocity)
 {
-	if (event.getCode() == app::KeyEvent::KEY_LEFT)
+	if (event.getCode() == app::KeyEvent::KEY_SPACE)
 	{
-		pos.x -= (_deltaTime + velocity.x);
-	}
-
-	if (event.getCode() == app::KeyEvent::KEY_RIGHT)
-	{
-		pos.x += (_deltaTime + velocity.x);
+		manager->setState("jumping");
 	}
 }
 

@@ -24,31 +24,32 @@ void SpriteAnimationApp::prepareSettings(Settings* settings)
 
 void SpriteAnimationApp::setup()
 {
+	manager = new StateManager();
+
+	// create Character States
+	StandingState* standing = new StandingState(manager);
+	manager->registerState("standing", standing);
+
+	RunningState* running = new RunningState(manager);
+	manager->registerState("running", running);
+
+	JumpingState* jumping = new JumpingState(manager);
+	manager->registerState("jumping", jumping);
+
+	 //enter first state
+	manager->setState("standing");
+
 	FRAMES_PER_SECOND = 8;
 	FRAME_SIZE = cinder::Vec2f(64.0f, 64.0f);
 
 	texture = loadImage(loadAsset("../assets/mario.png"));	
-	isLeft = false;
 	player = new Sprite(texture);
 	player->setFrameSize(FRAME_SIZE);
 
-	playerStartPos = ci::app::getWindowCenter();
-	pos = playerStartPos;
-	velocity = Vec2f(12.0, 0);
-
-	// create Character States
-	/*StandingState* standing = new StandingState(manager);*/
-	/*manager->registerState("standing", standing);*/
-
-	/*RunningState* running = new RunningState(manager);*/
-	/*manager->registerState("running", running);*/
-
-	/*JumpingState* jumping = new JumpingState(manager);*/
-	/*manager->registerState("jumping", jumping);*/
-
-	manager = new StateManager();
-	// enter first state
-	manager->setState("standing");
+	// setting player Startposition and Velocity
+	Vec2f playerStartPos = ci::app::getWindowCenter();
+	manager->setPos(playerStartPos);
+	manager->setVelocity(Vec2f(6.0, 0));
 
 	lastTime = getElapsedSeconds();
 }
@@ -67,12 +68,12 @@ void SpriteAnimationApp::draw()
 	gl::clear( Color( 0, 0, 0 ) ); 
 	gl::enableAlphaTest();
 	gl::enableAlphaBlending();
-	manager->draw(*player, pos, FRAMES_PER_SECOND);
+	manager->draw(*player, manager->getPos(), FRAMES_PER_SECOND);
 }
 
 void SpriteAnimationApp::keyDown(ci::app::KeyEvent event)
 {
-	manager->keyDown(event, pos, velocity);
+	manager->keyDown(event, manager->getPos(), manager->getVelocity());
 }
 
 void SpriteAnimationApp::keyUp(ci::app::KeyEvent event)

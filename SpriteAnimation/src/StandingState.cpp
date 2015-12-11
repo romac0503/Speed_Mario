@@ -3,17 +3,16 @@
 
 StandingState::~StandingState()
 {
-	std::cout << "StandingState exited" << std::endl;
 }
 
 void StandingState::init(StateManager* manager)
 {
-	this->manager = manager;		// da ist noch ein Fehler!
+	this->manager = manager;
 }
 
 void StandingState::exit()
 {
-	delete this;
+	this->manager = nullptr;
 }
 
 void StandingState::update(float deltaTime)

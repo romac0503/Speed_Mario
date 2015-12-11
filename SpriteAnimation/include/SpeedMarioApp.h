@@ -45,11 +45,7 @@ private:
 	std::string jumping;
 
 	float lastTime, currTime, deltaTime;
-	cinder::Vec2f playerStartPos;
-	cinder::Vec2f pos;
-	cinder::Vec2f velocity;
 	MarioAnimation animation;
-	bool isLeft;
 	ci::gl::Texture texture;
 	Sprite* player;
 	StateManager* manager;

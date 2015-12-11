@@ -6,92 +6,46 @@
 
 StateManager::StateManager():currState(nullptr)
 {
-	standing = new StandingState(this);
-	running = new RunningState(this);
-	jumping = new JumpingState(this);
-	currState = standing;
 	isFlipped = false;
 }
 
-StateManager::StateManager(const StateManager& cpy)
+StateManager::~StateManager()
 {
-	// here the assignment operator is called, which
-	// does all the work.
-	*this = cpy;
+	delete currState;
 }
-
-StateManager& StateManager::operator=(StateManager const &other)
-{
-	// TODO: insert return statement here
-	if (this == &other)
-	{
-		return *this;
-	}
-}
-
-//StateManager* StateManager::getInstance()
-//{
-//	if (!instanceFlag)
-//	{
-//		instanceFlag = true;
-//		manager = new StateManager();
-//		return manager;
-//	}
-//	else
-//	{
-//		return manager;
-//	}
-//}
 
 void StateManager::setState(std::string stateName)
 {
-	/*State* state = states[stateName];*/
-	if (currState != nullptr)
+	State* state = states[stateName];
+
+	if (state != currState)
 	{
-		if (stateName == "standing")
+		if (currState != nullptr)
 		{
-			if (currState != standing)
-			{
-				currState->exit();
-			}
-			currState = new StandingState(this);
-			currState->init(this);
+			currState->exit();
 		}
-		else if (stateName == "running")
-		{
-			if (currState != running)
-			{
-				currState->exit();
-			}
-			currState = new RunningState(this);
-			currState->init(this);
-		}
-		else if (stateName == "jumping")
-		{
-			if (currState != jumping)
-			{
-				currState->exit();
-			}
-			currState = new JumpingState(this);
-			currState->init(this);
-		}
+		currState = state;
+		currState->init(this);
 	}
-	
-	/*if (state != currState)
-	{
-		currState->exit();
-	}
-	currState = state;
-	currState->init();*/
 }
 
-//void StateManager::registerState(std::string name, State* state)
-//{
-//	states[name] = state;
-//}
+void StateManager::registerState(std::string name, State* state)
+{
+	states[name] = state;
+}
 
 void StateManager::update(float delta)
 {
+	if (leftDown)
+	{
+		pos.x -= (velocity.x + delta);
+	}
+
+	if (rightDown)
+	{
+		pos.x += (velocity.x + delta);
+	}
+
 	currState->update(delta);
 }
 
@@ -105,16 +59,37 @@ void StateManager::keyDown(ci::app::KeyEvent event, cinder::Vec2f& pos, cinder::
 	if (event.getCode() == cinder::app::KeyEvent::KEY_LEFT)
 	{
 		isFlipped = true;
+		rightDown = false;
+		leftDown = true;
+		currState->keyDown(event, pos, velocity);
 	}
 
 	if (event.getCode() == cinder::app::KeyEvent::KEY_RIGHT)
 	{
 		isFlipped = false;
+		rightDown = true;
+		leftDown = false;
+		currState->keyDown(event, pos, velocity);
 	}
-	currState->keyDown(event, pos, velocity);
+
+	if (event.getCode() == cinder::app::KeyEvent::KEY_SPACE)
+	{
+		currState->keyDown(event, pos, velocity);
+	}
 }
 
 void StateManager::keyUp(ci::app::KeyEvent event)
 {
+	if (event.getCode() == cinder::app::KeyEvent::KEY_LEFT)
+	{
+		leftDown = false;
+		currState->keyDown(event, pos, velocity);
+	}
+
+	if (event.getCode() == cinder::app::KeyEvent::KEY_RIGHT)
+	{
+		rightDown = false;
+		currState->keyDown(event, pos, velocity);
+	}
 	currState->keyUp(event);
 }

@@ -14,7 +14,7 @@ class JumpingState : public State
 public:
 	JumpingState(StateManager* _manager) :State(_manager) {}
 	virtual ~JumpingState();
-	
+
 	virtual void init(StateManager* manager);
 	virtual void exit();
 

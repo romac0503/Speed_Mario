@@ -3,7 +3,6 @@
 
 JumpingState::~JumpingState()
 {
-	std::cout << "JumpingState exited" << std::endl;
 }
 
 void JumpingState::init(StateManager* manager)
@@ -13,7 +12,7 @@ void JumpingState::init(StateManager* manager)
 
 void JumpingState::exit()
 {
-	delete this;
+	this->manager = nullptr;
 }
 
 void JumpingState::update(float deltaTime)

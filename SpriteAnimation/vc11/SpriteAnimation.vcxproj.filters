@@ -33,10 +33,10 @@
     <ClInclude Include="..\include\StandingState.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\JumpingState.h">
+    <ClInclude Include="..\include\RunningState.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\RunningState.h">
+    <ClInclude Include="..\include\JumpingState.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -63,10 +63,10 @@
     <ClCompile Include="..\src\StandingState.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\JumpingState.cpp">
+    <ClCompile Include="..\src\RunningState.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\RunningState.cpp">
+    <ClCompile Include="..\src\JumpingState.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
