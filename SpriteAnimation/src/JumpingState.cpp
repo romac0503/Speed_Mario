@@ -17,7 +17,6 @@ void JumpingState::exit()
 
 void JumpingState::update(float deltaTime)
 {
-	_deltaTime = deltaTime;
 }
 
 void JumpingState::draw(Sprite& sprite, Vec2f& pos, int framesPerSec, bool isFlipped)

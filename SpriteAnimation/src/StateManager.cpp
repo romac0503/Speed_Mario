@@ -49,7 +49,7 @@ void StateManager::update(float delta)
 	if (!grounded)
 	{
 		pos.y -= jumpVelocity;
-		jumpVelocity -= gravity;
+		jumpVelocity -= (0.25 *gravity);
 	}
 
 	if (pos.y >= getWindowHeight() / 2)

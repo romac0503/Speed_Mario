@@ -27,5 +27,4 @@ public:
 private:
 	float _frameDelta;
 	int _currentFrame;
-	float _deltaTime;
 };

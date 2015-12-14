@@ -17,7 +17,6 @@ void StandingState::exit()
 
 void StandingState::update(float deltaTime)
 {
-	_deltaTime = deltaTime;
 }
 
 void StandingState::draw(Sprite& sprite, Vec2f& pos, int framesPerSec, bool isFlipped)

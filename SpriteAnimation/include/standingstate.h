@@ -23,7 +23,4 @@ public:
 	
 	virtual void keyDown(ci::app::KeyEvent event, cinder::Vec2f& pos, cinder::Vec2f& velocity);
 	virtual void keyUp(ci::app::KeyEvent event);
-
-private:
-	float _deltaTime;
 };

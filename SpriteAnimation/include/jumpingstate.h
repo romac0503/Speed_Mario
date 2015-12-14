@@ -28,7 +28,5 @@ private:
 
 	float m_frameDelta;
 	int m_currentFrame;
-	float _deltaTime;
-	ci::Vec2f _pos;
 };
 

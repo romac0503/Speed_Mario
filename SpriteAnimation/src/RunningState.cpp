@@ -18,7 +18,6 @@ void RunningState::exit()
 
 void RunningState::update(float deltaTime)
 {
-	_deltaTime = deltaTime;
 }
 
 void RunningState::keyDown(ci::app::KeyEvent event, Vec2f& pos, Vec2f& velocity)

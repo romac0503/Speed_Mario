@@ -3,7 +3,7 @@
 #include <map>
 #include "Sprite.h"
 
-#define JUMP_VELOCITY 45.0
+#define JUMP_VELOCITY 30.0
 #define GRAVITY 8.0
 
 // forward declaration to avoid circular header file dependency
@@ -30,8 +30,6 @@ private:
 	State* running;
 	State* jumping;
 
-	void calcPos(float delta);
-
 public:
 	StateManager();
 	~StateManager();
@@ -46,6 +44,9 @@ public:
 	void setPos(cinder::Vec2f pos) { this->pos = pos; }
 	void setVelocity(cinder::Vec2f velocity) { this->velocity = velocity; }
 	cinder::Vec2f getVelocity() { return velocity; }
+	float getGravity() { return gravity; }
+	float getJumpVelocity() { return jumpVelocity; }
+	void setJumpVelocity(float velocity) { jumpVelocity = velocity; }
 
 	void keyDown(ci::app::KeyEvent event, cinder::Vec2f& pos, cinder::Vec2f& velocity);
 	void keyUp(ci::app::KeyEvent event);
