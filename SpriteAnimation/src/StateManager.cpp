@@ -7,6 +7,10 @@
 StateManager::StateManager():currState(nullptr)
 {
 	isFlipped = false;
+	jumpPressed = false;
+	grounded = true;
+	jumpVelocity = JUMP_VELOCITY;
+	gravity = GRAVITY;
 }
 
 StateManager::~StateManager()
@@ -36,6 +40,24 @@ void StateManager::registerState(std::string name, State* state)
 
 void StateManager::update(float delta)
 {
+	if (grounded && !jumpPressed)
+	{
+		jumpVelocity = JUMP_VELOCITY;
+		jumpPressed = false;
+	}
+
+	if (!grounded)
+	{
+		pos.y -= jumpVelocity;
+		jumpVelocity -= gravity;
+	}
+
+	if (pos.y >= getWindowHeight() / 2)
+	{
+		pos.y = getWindowHeight() / 2;
+		grounded = true;
+	}
+
 	if (leftDown)
 	{
 		pos.x -= (velocity.x + delta);
@@ -75,6 +97,8 @@ void StateManager::keyDown(ci::app::KeyEvent event, cinder::Vec2f& pos, cinder::
 	if (event.getCode() == cinder::app::KeyEvent::KEY_SPACE)
 	{
 		currState->keyDown(event, pos, velocity);
+		jumpPressed = true;
+		grounded = false;
 	}
 }
 
@@ -90,6 +114,11 @@ void StateManager::keyUp(ci::app::KeyEvent event)
 	{
 		rightDown = false;
 		currState->keyDown(event, pos, velocity);
+	}
+
+	if (event.getCode() == cinder::app::KeyEvent::KEY_SPACE)
+	{
+		jumpPressed = false;
 	}
 	currState->keyUp(event);
 }

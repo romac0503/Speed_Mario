@@ -3,6 +3,9 @@
 #include <map>
 #include "Sprite.h"
 
+#define JUMP_VELOCITY 45.0
+#define GRAVITY 8.0
+
 // forward declaration to avoid circular header file dependency
 class State;
 
@@ -11,9 +14,13 @@ class StateManager
 private:
 	State* currState;
 	bool leftDown, rightDown;
+	bool jumpPressed;
+	bool grounded;
 	cinder::Vec2f playerStartPos;
 	cinder::Vec2f pos;
 	cinder::Vec2f velocity;
+	float jumpVelocity;
+	float gravity;
 
 	std::map<std::string, State*> states; // map of all available states
 	bool isFlipped;
@@ -22,6 +29,8 @@ private:
 	State* standing;
 	State* running;
 	State* jumping;
+
+	void calcPos(float delta);
 
 public:
 	StateManager();
