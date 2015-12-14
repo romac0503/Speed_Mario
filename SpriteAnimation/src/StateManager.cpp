@@ -6,8 +6,7 @@
 
 StateManager::StateManager():currState(nullptr)
 {
-	isFlipped = false;
-	jumpPressed = false;
+	leftDown = rightDown = isFlipped = jumpPressed = false;
 	grounded = true;
 	jumpVelocity = JUMP_VELOCITY;
 	gravity = GRAVITY;
@@ -42,6 +41,15 @@ void StateManager::update(float delta)
 {
 	if (grounded && !jumpPressed)
 	{
+		if (leftDown || rightDown)
+		{
+			setState("running");
+		}
+		else
+		{
+			setState("standing");
+		}
+		
 		jumpVelocity = JUMP_VELOCITY;
 		jumpPressed = false;
 	}
